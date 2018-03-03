@@ -7,17 +7,16 @@
     <hr/>
     <div class="row">
         <div class="col-2">
-            <button type="button" style="margin-bottom: 1rem;" class="btn btn-secondary float-right" (click)="buscaPessoasPipedrive()">Novo</button>
+            <button type="button" style="margin-bottom: 1rem;" class="btn btn-secondary float-right" (click)="iniciaNovoCarro()">Novo</button>
         </div>
     </div>
     <div class="row" *ngIf="listaPessoasPipedrive">
         <div class="col-2">
             <ul class="list-group">
-                <li class="list-group-item">Palio</li>
-                <li class="list-group-item">Sandero</li>
-                <li class="list-group-item">Clio</li>
-                <li class="list-group-item">Gol</li>
-                <li class="list-group-item">Uno</li>
+                <li class="list-group-item" *ngFor="let carro of listaCarros" (click)="selecionaCarro(carro)">
+                    {{carro.modelo}}
+                </li>
+                <li class="list-group-item" *ngIf="listaCarros == ''">Nenhum carro salvo!</li>
             </ul>
         </div>
         <div class="col">
@@ -26,36 +25,41 @@
                     <legend align="center">Novo Carro</legend>
                 </div>
                 <div class="card-block">
-                    <form>
+                    <form [formGroup]="formGroup" (ngSubmit)="salvarCarro(); $event.preventDefault()">
+                        <input formControlName="id" [hidden]="true" type="text" class="form-control">
                         <div class="form-group row">
-                            <label for="exampleSelectResponsavel1" class="col-2 col-form-label">Responsável:</label>
+                            <label class="col-2 col-form-label">Responsável:</label>
                             <div class="col-10">
-                                <select class="form-control" id="exampleSelectResponsavel1">
-                                    <option *ngFor="let pessoaPipedrive of listaPessoasPipedrive">
-                                        {{pessoaPipedrive.id}} - {{pessoaPipedrive.name}}
+                                <select class="form-control" formControlName="pessoaId">
+                                    <option [ngValue]="null" disabled selected>Úsuario do Pipedrive</option>
+                                    <option *ngFor="let pessoaPipedrive of listaPessoasPipedrive" value={{pessoaPipedrive.id}}>
+                                        {{pessoaPipedrive.name}}
                                     </option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="exampleInputModelo1" class="col-2 col-form-label">Modelo:</label>
+                            <label class="col-2 col-form-label">Modelo:</label>
                             <div class="col-10">
-                                <input type="text" class="form-control" id="exampleInputModelo1" placeholder="Ex: Celta">
+                                <input formControlName="modelo" type="text" class="form-control" placeholder="Ex: Celta">
+                                <p class="danger" *ngIf="formGroup.controls.modelo.dirty && formGroup.controls.modelo.errors" margin-left>Valor inválido</p>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="exampleInputAno1" class="col-2 col-form-label">Ano:</label>
+                            <label class="col-2 col-form-label">Ano:</label>
                             <div class="col-10">
-                                <input type="text" class="form-control" id="exampleInputAno1" placeholder="Ex: 2009">
+                                <input formControlName="ano" type="number" min="0" class="form-control" placeholder="Ex: 2009">
+                                <p class="danger" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</p>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="exampleSelectCor1" class="col-2 col-form-label">Cor:</label>
+                            <label class="col-2 col-form-label">Cor:</label>
                             <div class="col-10">
-                                <select class="form-control" id="exampleSelectCor1">
-                                    <option>Branco</option>
-                                    <option>Preto</option>
-                                    <option>Verde</option>
+                                <select class="form-control" formControlName="cor">
+                                    <option [ngValue]="null" disabled selected>Cores de carro</option>
+                                    <option *ngFor="let cor of listaCoresCarro" value={{cor}}>
+                                        {{cor}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -64,7 +68,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary float-right">Salvar</button>
+                            <button type="submit" [disabled]="formGroup.invalid" class="btn btn-primary float-right" (click)="salvarCarro()">Salvar</button>
                         </div>
                     </div>
                 </div>
