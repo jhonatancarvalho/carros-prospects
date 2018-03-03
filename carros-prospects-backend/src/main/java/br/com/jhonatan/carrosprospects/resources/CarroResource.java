@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.jhonatan.carrosprospects.domain.Carro;
+import br.com.jhonatan.carrosprospects.enums.CorCarro;
 import br.com.jhonatan.carrosprospects.services.CarroService;
 
 @RestController
@@ -55,6 +56,11 @@ public class CarroResource {
 	@GetMapping
 	public ResponseEntity<List<Carro>> findAll() {
 		return ResponseEntity.ok(carroService.findAll());
+	}
+	
+	@GetMapping("/cores")
+	public ResponseEntity<CorCarro[]> findCores() {
+		return ResponseEntity.ok(CorCarro.values());
 	}
 	
 }
