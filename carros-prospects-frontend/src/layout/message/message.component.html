@@ -1,0 +1,14 @@
+<div [ngClass]="classeMensagem" *ngIf="mensagem">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button" (click)="fechaMensagem()">×</button>
+    <span>
+        <strong>{{ mensagem.titulo }}</strong>
+        <br *ngIf="mensagem.listaMensagens.length > 0">
+    </span> 
+    <span *ngIf="mensagem.listaMensagens.length <= 0">
+        {{ mensagem.texto }}
+    </span>
+    <span *ngFor="let mensagemAtual of mensagem.listaMensagens">
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>{{ mensagemAtual.fieldName.substring(0, 1).toUpperCase() }}{{ mensagemAtual.fieldName.substring(1, mensagemAtual.fieldName.length) }}</b> - {{ mensagemAtual.message }}
+        <br>
+    </span>
+</div>

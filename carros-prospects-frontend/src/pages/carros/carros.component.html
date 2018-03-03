@@ -10,6 +10,7 @@
             <button type="button" style="margin-bottom: 1rem;" class="btn btn-secondary float-right" (click)="iniciaNovoCarro()">Novo</button>
         </div>
     </div>
+    <message [mensagemInput]="mensagem"></message>
     <div class="row" *ngIf="listaPessoasPipedrive">
         <div class="col-2">
             <ul class="list-group">
@@ -25,6 +26,7 @@
                     <legend align="center">Novo Carro</legend>
                 </div>
                 <div class="card-block">
+                    
                     <form [formGroup]="formGroup" (ngSubmit)="salvarCarro(); $event.preventDefault()">
                         <input formControlName="id" [hidden]="true" type="text" class="form-control">
                         <div class="form-group row">

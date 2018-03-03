@@ -4,19 +4,21 @@ import { PessoaPipedriveDTO } from '../../models/pessoa-pipedrive.dto';
 import { CarroService } from '../../services/domain/carro.service';
 import { CarroDTO } from '../../models/carro.dto';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MENSAGEM } from '../../layout/message/message.constants';
 
 @Component({
   selector: 'carros-component',
   templateUrl: './carros.component.html',
   styleUrls: ['./carros.component.css']
 })
-export class CarrosComponent implements OnInit {
+export class CarrosComponent {
 
   formGroup: FormGroup;
   token: string;
   listaPessoasPipedrive: PessoaPipedriveDTO[];
   listaCarros: CarroDTO[];
   listaCoresCarro: string[];
+  mensagem;
 
   constructor(
     private pessoaPipedriveService: PessoaPipedriveService,
@@ -32,8 +34,6 @@ export class CarrosComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
-
   iniciaNovoCarro() {
     this.formGroup.reset();
     this.buscaPessoasPipedrive();
@@ -46,7 +46,7 @@ export class CarrosComponent implements OnInit {
       this.buscaCarros();
       this.buscaCoresCarro();
     }, error => {
-      console.log(error);
+      this.mostrarMensagem(MENSAGEM.ERROR, 'Problema ao buscar pessoas no Pipedrive com este token, verifique seu token');
     });
   }
 
@@ -55,7 +55,7 @@ export class CarrosComponent implements OnInit {
     .subscribe(response => {
       this.listaCarros = response;
     }, error => {
-      console.log(error);
+      this.mostrarMensagem(MENSAGEM.ERROR, null, error);
     });
   }
 
@@ -64,7 +64,7 @@ export class CarrosComponent implements OnInit {
     .subscribe(response => {
       this.listaCoresCarro = response;
     }, error => {
-      console.log(error);
+      this.mostrarMensagem(MENSAGEM.ERROR, null, error);
     });
   }
 
@@ -80,20 +80,38 @@ export class CarrosComponent implements OnInit {
     if (this.formGroup.controls.id.value == null) {
       this.carroService.save(this.formGroup.value)
       .subscribe(response => {
-        console.log('Salvo com sucesso!');
+        this.mostrarMensagem(MENSAGEM.SUCCESS, 'Salvo com sucesso!');
+        this.iniciaNovoCarro();
       }, error => {
-        console.log(error);
+        this.mostrarMensagem(MENSAGEM.ERROR, null, error);
       });
-    } else {
-      console.log(this.formGroup.value);
-      this.carroService.update(this.formGroup.value, this.formGroup.controls.id.value)
-      .subscribe(response => {
-        console.log('Alterado com sucesso!');
-      }, error => {
-        console.log(error);
-      });
-    }
-    this.iniciaNovoCarro();
+      return;
+    } 
+    
+    this.carroService.update(this.formGroup.value, this.formGroup.controls.id.value)
+    .subscribe(response => {
+      this.mostrarMensagem(MENSAGEM.SUCCESS, 'Alterado com sucesso!');
+      this.iniciaNovoCarro();
+    }, error => {
+      this.mostrarMensagem(MENSAGEM.ERROR, null, error);
+    });
   }
 
+  mostrarMensagem(tipo: string, texto: string, erro?, timeout?: number) {
+    if (erro) {
+      let mensagemErro = JSON.parse(erro.error);
+      let mensagem = {
+        tipo: tipo,
+        titulo: mensagemErro.error,
+        listaMensagens: mensagemErro.erros
+      };
+      this.mensagem = mensagem;
+      return;
+    }
+    let mensagem = {
+        tipo: tipo,
+        texto: texto
+    };
+    this.mensagem = mensagem;
+  }
 }
