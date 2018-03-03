@@ -1,16 +1,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <input type="text" class="form-control" placeholder="Token do Pipedrive">
+            <input [(ngModel)]="token" [attr.disabled]="listaPessoasPipedrive" type="text" class="form-control" placeholder="Token do Pipedrive">
         </div>
     </div>
     <hr/>
     <div class="row">
         <div class="col-2">
-            <button type="button" style="margin-bottom: 1rem;" class="btn btn-secondary float-right">Novo</button>
+            <button type="button" style="margin-bottom: 1rem;" class="btn btn-secondary float-right" (click)="buscaPessoasPipedrive()">Novo</button>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="listaPessoasPipedrive">
         <div class="col-2">
             <ul class="list-group">
                 <li class="list-group-item">Palio</li>
@@ -31,8 +31,9 @@
                             <label for="exampleSelectResponsavel1" class="col-2 col-form-label">Responsável:</label>
                             <div class="col-10">
                                 <select class="form-control" id="exampleSelectResponsavel1">
-                                    <option>Jhonatan Carvalho</option>
-                                    <option>Roberta Melo</option>
+                                    <option *ngFor="let pessoaPipedrive of listaPessoasPipedrive">
+                                        {{pessoaPipedrive.id}} - {{pessoaPipedrive.name}}
+                                    </option>
                                 </select>
                             </div>
                         </div>

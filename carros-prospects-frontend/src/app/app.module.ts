@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
-import { CarrosComponent } from './pages/carros/carros.component';
-
+import { CarrosComponent } from '../pages/carros/carros.component';
+import { PessoaPipedriveService } from '../services/domain/pessoa-pipedrive.service';
 
 @NgModule({
   declarations: [
@@ -13,9 +15,13 @@ import { CarrosComponent } from './pages/carros/carros.component';
   ],
   imports: [
     AppRoutingModule,
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    PessoaPipedriveService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

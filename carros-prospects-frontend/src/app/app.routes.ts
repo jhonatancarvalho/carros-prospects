@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { CarrosComponent } from './pages/carros/carros.component';
+import { CarrosComponent } from '../pages/carros/carros.component';
 
 const appRoutes: Routes = [
     {
