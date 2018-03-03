@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "../carros-prospects-backend/src/main/webapp",
+      "outDir": "dist",
       "assets": [
         "assets",
         "favicon.ico"
@@ -19,6 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css"
       ],
       "scripts": [],
