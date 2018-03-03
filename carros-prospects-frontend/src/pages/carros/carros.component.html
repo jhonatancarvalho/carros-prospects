@@ -69,8 +69,9 @@
                 </div>
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col">
-                            <button type="submit" [disabled]="formGroup.invalid" class="btn btn-primary float-right" (click)="salvarCarro()">Salvar</button>
+                        <div class="col text-right">
+                            <button type="submit" *ngIf="formGroup.controls.id.value" class="btn btn-secondary" (click)="excluirCarro()">Excluir</button>
+                            <button type="submit" [disabled]="formGroup.invalid" class="btn btn-primary" (click)="salvarCarro()">Salvar</button>
                         </div>
                     </div>
                 </div>

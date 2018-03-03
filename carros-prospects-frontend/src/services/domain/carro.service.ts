@@ -32,6 +32,16 @@ export class CarroService {
         ); 
     }
 
+    delete(id : number) {
+        return this.http.delete(
+            `${API_CONFIG.baseUrl}/carros/${id}`, 
+            { 
+                observe: 'response', 
+                responseType: 'text'
+            }
+        ); 
+    }
+
     findAll() : Observable<CarroDTO[]> {
         return this.http.get<CarroDTO[]>(`${API_CONFIG.baseUrl}/carros`);
     }

@@ -97,6 +97,17 @@ export class CarrosComponent {
     });
   }
 
+  excluirCarro() {
+    this.carroService.delete(this.formGroup.controls.id.value)
+    .subscribe(response => {
+      this.mostrarMensagem(MENSAGEM.SUCCESS, 'Excluido com sucesso!');
+      this.iniciaNovoCarro();
+    }, error => {
+      console.log(error);
+      this.mostrarMensagem(MENSAGEM.ERROR, null, error);
+    });
+  }
+
   mostrarMensagem(tipo: string, texto: string, erro?, timeout?: number) {
     if (erro) {
       let mensagemErro = JSON.parse(erro.error);
